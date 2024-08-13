@@ -1,6 +1,4 @@
-using Google.Protobuf.WellKnownTypes;
 using System.Collections.Generic;
-using AElf.Types;
 
 namespace AElf.Contracts.ToDo
 {
