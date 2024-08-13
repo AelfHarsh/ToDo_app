@@ -1,0 +1,15 @@
+2024-08-13 07:23:50,699 [1] INFO  AElfChain.Common.Managers.NodeManager - Url:https://tdvw-test-node.aelf.io/ is connected!
+2024-08-13 07:23:50,945 [1] INFO  AElfChain.Common.Managers.AccountManager - Account 'GiSQwUBFnychhU7DzFmMgZNZy1tmZ2pm4vYKZXWtUiUihyFEL' successfully unlocked!
+2024-08-13 07:23:51,312 [1] INFO  AElfChain.Common.Contracts.GenesisContract - Token contract address: ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx
+2024-08-13 07:23:51,489 [1] INFO  AElfChain.Common.Contracts.GenesisContract - Consensus contract address: 2KPUA5wG78nnNmK9JsRWbFiEFUEfei9WKniZuKaVziDKZRwchM
+2024-08-13 07:23:51,644 [1] INFO  AElfChain.Common.Contracts.GenesisContract - Parliament contract address: vcv1qewcsFN2tVWqLuu7DJ5wVFA8YEx5FFgCQBb1jMCbAQHxV
+2024-08-13 07:23:51,703 [1] INFO  AElf.Deploy.Cli.Program - ======== AddWhiteList ========
+2024-08-13 07:23:51,882 [1] INFO  AElf.Deploy.Cli.Program - { "proposers": [ "V6LuP6FXKPoXqR5V9X2XuufZ8wSwKu4kNJbxY8i9JJ4NDPxib", "2UKQnHcQvhBT6X6ULtfnuh3b9PVRvVMEroHHkcK4YfcoH1Z1x2" ] }
+2024-08-13 07:23:51,976 [1] INFO  AElf.Deploy.Cli.Program - ======== Genesis contract is in ProposalWhiteList ========
+2024-08-13 07:23:51,977 [1] INFO  AElf.Deploy.Cli.Program - ======== WithoutApproval ========
+2024-08-13 07:23:52,935 [1] INFO  AElfChain.Common.Contracts.GenesisContract - Transaction method: DeployUserSmartContract, TxId: f5f9d4a89ef958cdcd6a67a8d407aa50e189dc8f89fe73f004e6f348130e31fd
+2024-08-13 07:23:54,706 [1] INFO  AElfChain.Common.Managers.NodeManager - Transaction f5f9d4a89ef958cdcd6a67a8d407aa50e189dc8f89fe73f004e6f348130e31fd Method:DeployUserSmartContract, Status: Mined-[Fee=0]
+2024-08-13 07:23:55,711 [1] INFO  AElf.Deploy.Cli.Program - Code hash: c50ffe48fd35ac080ff4a7f51b232c70dc526ef62f8727b1944072c2bf5ec1ac
+ ProposalInput: 6cd855acf0f8fec296e6160ba8d53a0026f1cd57923160e634b830df4e576435
+ Proposal Id: a66147a0707bd2f9a47b7eb52bfe71265087a57bd33ce8385d522696268ffd71
+2024-08-13 07:23:57,633 [1] INFO  AElf.Deploy.Cli.Program - ======== Check Proposal Info ========
