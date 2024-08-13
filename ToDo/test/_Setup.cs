@@ -1,10 +1,10 @@
 ﻿using AElf.Cryptography.ECDSA;
 using AElf.Testing.TestBase;
 
-namespace AElf.Contracts.ToDO
+namespace AElf.Contracts.ToDo
 {
     // The Module class load the context required for unit testing
-    public class Module : ContractTestModule<ToDO>
+    public class Module : ContractTestModule<ToDo>
     {
         
     }
@@ -13,18 +13,18 @@ namespace AElf.Contracts.ToDO
     public class TestBase : ContractTestBase<Module>
     {
         // The Stub class for unit testing
-        internal readonly ToDOContainer.ToDOStub ToDOStub;
+        internal readonly ToDoContainer.ToDoStub ToDoStub;
         // A key pair that can be used to interact with the contract instance
         private ECKeyPair DefaultKeyPair => Accounts[0].KeyPair;
 
         public TestBase()
         {
-            ToDOStub = GetToDOContractStub(DefaultKeyPair);
+            ToDoStub = GetToDoContractStub(DefaultKeyPair);
         }
 
-        private ToDOContainer.ToDOStub GetToDOContractStub(ECKeyPair senderKeyPair)
+        private ToDoContainer.ToDoStub GetToDoContractStub(ECKeyPair senderKeyPair)
         {
-            return GetTester<ToDOContainer.ToDOStub>(ContractAddress, senderKeyPair);
+            return GetTester<ToDoContainer.ToDoStub>(ContractAddress, senderKeyPair);
         }
     }
     

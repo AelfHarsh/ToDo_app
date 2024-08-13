@@ -3,10 +3,10 @@ using Google.Protobuf.WellKnownTypes;
 using Shouldly;
 using Xunit;
 
-namespace AElf.Contracts.ToDO
+namespace AElf.Contracts.ToDo
 {
     // This class is unit test class, and it inherit TestBase. Write your unit test code inside it
-    public class ToDOTests : TestBase
+    public class ToDoTests : TestBase
     {
         [Fact]
         public async Task Update_ShouldUpdateMessageAndFireEvent()
@@ -16,10 +16,10 @@ namespace AElf.Contracts.ToDO
             var input = new StringValue { Value = inputValue };
 
             // Act
-            await ToDOStub.Update.SendAsync(input);
+            await ToDoStub.Update.SendAsync(input);
 
             // Assert
-            var updatedMessage = await ToDOStub.Read.CallAsync(new Empty());
+            var updatedMessage = await ToDoStub.Read.CallAsync(new Empty());
             updatedMessage.Value.ShouldBe(inputValue);
         }
     }
