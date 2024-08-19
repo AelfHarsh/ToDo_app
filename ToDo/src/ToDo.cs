@@ -1,5 +1,5 @@
+using Google.Protobuf.WellKnownTypes;
 using System.Collections.Generic;
-
 namespace AElf.Contracts.ToDo
 {
     public class ToDo : ToDoContainer.ToDoBase
@@ -10,76 +10,62 @@ namespace AElf.Contracts.ToDo
             {
                 return new Empty();
             }
-
             State.Initialized.Value = true;
             State.Owner.Value = Context.Sender;
-            State.TaskIds.Value = ""; // Initialize empty string for task IDs
-            State.TaskCounter.Value = 0; // Initialize task counter
-
+            State.TaskIds.Value = "";
+            State.TaskCounter.Value = 0;
             return new Empty();
         }
-
         public override StringValue CreateTask(TaskInput input)
         {
             if (!State.Initialized.Value)
             {
-                // Handle uninitialized state
                 return new StringValue { Value = "Contract not initialized." };
             }
-
             var taskId = (State.TaskCounter.Value + 1).ToString();
             State.TaskCounter.Value++;
-
             var timestamp = Context.CurrentBlockTime.Seconds;
-
-            var task = new CustomTask
+            // Create task dictionary entry directly in ToDo class
+            State.Tasks[taskId] = new Task
             {
+                TaskId = taskId,
                 Name = input.Name,
                 Description = input.Description,
                 Category = input.Category,
-                Status = "Pending",
+                Status = "pending",
                 CreatedAt = timestamp,
-                UpdatedAt = timestamp
+                UpdatedAt = timestamp,
+                Owner = Context.Sender.ToString().Trim('"'),
             };
-
-            State.Tasks[taskId] = task;
-            State.TaskExistence[taskId] = true; // Mark task as existing
-
+            State.TaskExistence[taskId] = true;
             // Append task ID to the list of IDs
             var existingTaskIds = State.TaskIds.Value;
-            if (!string.IsNullOrEmpty(existingTaskIds))
-            {
-                existingTaskIds += ",";
-            }
-            existingTaskIds += taskId;
+            existingTaskIds += string.IsNullOrEmpty(existingTaskIds) ? taskId : $",{taskId}";
             State.TaskIds.Value = existingTaskIds;
-
             return new StringValue { Value = taskId };
         }
-
         public override Empty UpdateTask(TaskUpdateInput input)
         {
             var task = State.Tasks[input.TaskId];
+            if (task == null)
+            {
+                return new Empty(); // Handle case if task doesn't exist
+            }
             task.Name = input.Name ?? task.Name;
             task.Description = input.Description ?? task.Description;
             task.Category = input.Category ?? task.Category;
             task.Status = input.Status ?? task.Status;
             task.UpdatedAt = Context.CurrentBlockTime.Seconds;
-
             State.Tasks[input.TaskId] = task;
-
             return new Empty();
         }
-
         public override Empty DeleteTask(StringValue input)
         {
-
             State.Tasks.Remove(input.Value);
-            State.TaskExistence.Remove(input.Value); // Remove task existence record
-
+            State.TaskExistence.Remove(input.Value);
             // Remove task ID from the list of IDs
             var existingTaskIds = State.TaskIds.Value.Split(',');
-            var newTaskIds = new List<string>();
+            var newTaskIds = new List<string>(existingTaskIds.Length);
             foreach (var taskId in existingTaskIds)
             {
                 if (taskId != input.Value)
@@ -88,55 +74,35 @@ namespace AElf.Contracts.ToDo
                 }
             }
             State.TaskIds.Value = string.Join(",", newTaskIds);
-
             return new Empty();
         }
-
-        public override TaskList ListTasks(Empty input)
+        public override TaskList ListTasks(StringValue input)
         {
+            var owner = input.Value; // Get the owner value from the input
             var taskList = new TaskList();
             var taskIds = State.TaskIds.Value.Split(',');
-
             foreach (var taskId in taskIds)
             {
                 var task = State.Tasks[taskId];
-                if (task != null)
+                if (task != null && task.Owner == owner) // Filter tasks by owner
                 {
-                    taskList.Tasks.Add(new Task
-                    {
-                        TaskId = taskId,
-                        Name = task.Name,
-                        Description = task.Description,
-                        Category = task.Category,
-                        Status = task.Status,
-                        CreatedAt = task.CreatedAt,
-                        UpdatedAt = task.UpdatedAt
-                    });
+                    taskList.Tasks.Add(task);
                 }
             }
-
             return taskList;
         }
-
         public override Task GetTask(StringValue input)
         {
-            var customTask = State.Tasks[input.Value];
-            if (customTask == null)
+            var task = State.Tasks[input.Value];
+            if (task == null)
             {
-                // Handle task not found
                 return new Task { TaskId = input.Value, Name = "Task not found." };
             }
-
-            return new Task
-            {
-                TaskId = input.Value,
-                Name = customTask.Name,
-                Description = customTask.Description,
-                Category = customTask.Category,
-                Status = customTask.Status,
-                CreatedAt = customTask.CreatedAt,
-                UpdatedAt = customTask.UpdatedAt
-            };
+            return task;
+        }
+        public override BoolValue GetInitialStatus(Empty input)
+        {
+            return new BoolValue { Value = State.Initialized.Value };
         }
     }
 }
